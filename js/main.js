@@ -7,21 +7,23 @@ if (localStorage.getItem("siteData")) {
 
 function addSiteDataToTheTable() {
   var siteName = document.getElementById("siteNameId").value;
-  var sitteUrl = document.getElementById("urlId").value;
+  var siteUrl = document.getElementById("urlId").value;
 
-  if (!siteName || !sitteUrl) {
-    
-    document.getElementById('sNameAlertId').classList.remove("d-none");
-    document.getElementById('sNameAlertId').classList.add("d-block");
+  var urlRegex = /^(https?:\/\/)?(www\.)?[a-zA-Z0-9-]+\.[a-z]{2,}(\/\S*)?$/;
 
-    document.getElementById('urlAlertId').classList.remove("d-none");
-    document.getElementById('urlAlertId').classList.add("d-block");
+  if (!siteName || !siteUrl) {
+    alert("Please fill in both fields.");
+    return;
+  }
+
+  if (!urlRegex.test(siteUrl)) {
+    alert("Please enter a valid URL (e.g., https://example.com)");
     return;
   }
 
   var siteData = {
     sName: siteName,
-    sUrl: sitteUrl,
+    sUrl: siteUrl.startsWith("http") ? siteUrl : "https://" + siteUrl,
   };
 
   allSites.push(siteData);
@@ -36,13 +38,12 @@ function clearInputs() {
 }
 
 function displayWebSites() {
-
   function addHttp(url) {
-  if (!/^https?:\/\//i.test(url)) {
-    return 'http://' + url;
+    if (!/^https?:\/\//i.test(url)) {
+      return "http://" + url;
+    }
+    return url;
   }
-  return url;
-}
 
   var box = "";
 
@@ -51,7 +52,9 @@ function displayWebSites() {
     <tr>
     <td> ${[i + 1]}</td>
     <td> ${allSites[i].sName}</td>
-    <td> <a href="${addHttp(allSites[i].sUrl)}" target="_blank" class="btn btn-success">
+    <td> <a href="${addHttp(
+      allSites[i].sUrl
+    )}" target="_blank" class="btn btn-success">
           Visit
         </a></td>
     <td> <button onclick="DeleteSite(${i})" type="button" class="btn btn-danger"> <i class="fa-solid fa-eye pe-2"> Delete  </i></button></td>
