@@ -10,12 +10,7 @@ function addSiteDataToTheTable() {
   var sitteUrl = document.getElementById("urlId").value;
 
   if (!siteName || !sitteUrl) {
-    
-    document.getElementById('sNameAlertId').classList.remove("d-none");
-    document.getElementById('sNameAlertId').classList.add("d-block");
-
-    document.getElementById('urlAlertId').classList.remove("d-none");
-    document.getElementById('urlAlertId').classList.add("d-block");
+   alert("Please Fill All Data Fields")
     return;
   }
 
